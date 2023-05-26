@@ -1,6 +1,8 @@
 export const getTopCreators = (creators) => {
   const finalCreators = [];
-
+  const finalResults = [];
+  
+  if (creators){
   const finalResults = creators.reduce((index, currentValue) => {
     (index[currentValue.seller] = index[currentValue.seller] || []).push(
       currentValue
@@ -8,7 +10,7 @@ export const getTopCreators = (creators) => {
 
     return index;
   }, {});
-
+  };
   Object.entries(finalResults).forEach((item) => {
     const seller = item[0];
     const total = item[1]
