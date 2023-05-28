@@ -9,7 +9,7 @@ import {
 import { LockContext } from "../Context/LockContext";
 import { getTopCreators } from "../TopCreators/TopCreators";
 const Home = () => {
-  const { checkIfWalletConnected } = useContext(LockContext);
+  const { checkIfWalletConnected,currentAccount } = useContext(LockContext);
   useEffect(() => {
     checkIfWalletConnected();
   }, []);
@@ -20,11 +20,13 @@ const Home = () => {
   const creators = getTopCreators(nfts);
 
   useEffect(() => {
+    if(currentAccount){
     fetchProducts().then((items) => {
       setNfts(items);
       setNftsCopy(items);
       console.log(nfts);
     });
+    }
   }, []);
 
   return (

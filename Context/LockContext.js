@@ -134,8 +134,7 @@ export const LockProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/LhmefQrsJ6ZSQuAFJlRedd7LcAy1bfzQ");
-
+      const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/h_NStKMsZ5wMGDPIp6CJiBfMtsImTNa2");
       const contract = fetchContract(provider);
 
       const data = await contract.fetchMarketItems();
