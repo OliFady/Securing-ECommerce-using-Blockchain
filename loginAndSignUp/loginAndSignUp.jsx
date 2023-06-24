@@ -1,58 +1,65 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import PropTypes from "prop-types"
+import { useRouter } from "next/router";
 
 import Style from "./loginAndSignUp.module.css";
 import images from "../img";
 import { Button } from "../components/componentsindex.js";
+import login from "../pages/login"
 
-const loginAndSignUp = () => {
-  const [activeBtn, setActiveBtn] = useState(1);
+export default function loginAndSignUp ({setToken}) {	
+  const router = useRouter()
+  const [email,setEmail]=useState(); 
+	const [passw,setPassw]=useState(); 
 
-  const socialImage = [
-    {
-      social: images.facebook,
-      name: "Continue with Facebook",
-    },
-    {
-      social: images.twitter,
-      name: "Continue with twitter",
-    },
-    {
-      social: images.facebook,
-      name: "Continue with Facebook",
-    },
-  ];
+  async function loginUser(credentials) {
+
+ return fetch('http://127.0.0.1:3000/api/v1/users/login', {
+   method: 'POST',
+   headers: {
+     'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(credentials)
+ })
+   .then(data =>data.json())
+}
+
+function setToken(userToken) {
+  sessionStorage.setItem('token', JSON.stringify(userToken));
+}
+
+function setToken(userToken) {
+  sessionStorage.setItem('token', JSON.stringify(userToken));
+}
+
+const handleSubmit = async(event)=> {
+  if (!email || !passw){
+    event.preventDefault()
+      alert("please enter your email and password")
+    return
+    }
+  event.preventDefault();
+  console.log(email,passw)
+
+  const loginInfo = await loginUser({email,passw})
+  console.log(loginInfo.token)
+  setToken(loginInfo.token);
+  router.push("/")
+
+}
   return (
+
+<form onSubmit={handleSubmit}>
     <div className={Style.user}>
       <div className={Style.user_box}>
         <div className={Style.user_box_social}>
-          {socialImage.map((el, i) => (
-            <div
-              key={i + 1}
-              onClick={() => setActiveBtn(i + 1)}
-              className={`${Style.user_box_social_item} ${
-                activeBtn == i + 1 ? Style.active : ""
-              }`}
-            >
-              <Image
-                src={el.social}
-                alt={el.name}
-                width={30}
-                height={30}
-                className={Style.user_box_social_item_img}
-              />
-              <p>
-                <span>{el.name}</span>
-              </p>
-            </div>
-          ))}
         </div>
-        <p className={Style.user_box_or}>OR</p>
 
         <div className={Style.user_box_input}>
           <div className={Style.user_box_input_box}>
             <label htmlFor="email">Email address</label>
-            <input type="email" placeholder="example@emample.com" />
+            <input type="email" placeholder="example@emample.com" onChange={e=>setEmail(e.target.value)}  />
           </div>
 
           <div className={Style.user_box_input_box}>
@@ -65,14 +72,17 @@ const loginAndSignUp = () => {
                 <a href="#">Forget password</a>
               </p>
             </label>
-            <input type="password" />
+            <input type="password"  onChange={e=>setPassw(e.target.value)}  />
           </div>
         </div>
 
-        <Button btnName="Continue" classStyle={Style.button} />
+        <button type="submit"> Login</button>
       </div>
     </div>
+    </form>
   );
 };
 
-export default loginAndSignUp;
+loginAndSignUp.propTypes = {
+  setToken: PropTypes.func.isRequired
+}

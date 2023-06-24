@@ -1,9 +1,15 @@
 import React from "react";
+import axios from "axios";
+import Router from "next/router"
+import {useDispatch} from "react-redux"
 
 import Style from "../styles/login.module.css";
 import LoginAndSignUp from "../loginAndSignUp/loginAndSignUp";
 
-const login = () => {
+
+ const login = () => {
+
+
   return (
     <div className={Style.login}>
       <div className={Style.login_box}>
@@ -17,4 +23,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default login

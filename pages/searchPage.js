@@ -7,10 +7,23 @@ import images from "../img";
 import { LockContext } from "../Context/LockContext";
 
 const searchPage = () => {
-  const { fetchProducts, currentAccount } = useContext(LockContext);
+  const {getNft, fetchProducts, currentAccount } = useContext(LockContext);
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
 
+  const [sliderData,setSliderData] = useState([])
+
+  useEffect(()=>{
+    const fetchNft = async()=>{
+         const response = await fetch(
+            'http://127.0.0.1:3000/api/v1/nfts',{headers:{'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OTJhZDQ4MWE2NmU3M2NlYWZlZjNlNyIsImlhdCI6MTY4NzQ5ODM5MywiZXhwIjoxNjkxODE4MzkzfQ._9MyOLEhqIY73E4T-ksGRCVMwq0Z870zvPcMmip_YGI'}}
+         );
+         const data = await response.json();
+         console.log(data.data.nfts);
+         setSliderData(data.data.nfts);
+    }
+    fetchNft()
+  },[])
   useEffect(() => {
     try {
       if (currentAccount) {
@@ -49,7 +62,7 @@ const searchPage = () => {
         onHandleSearch={onHandleSearch}
         onClearSearch={onClearSearch}
       />
-      <NFTCardTwo NFTData={nfts} />
+      <NFTCardTwo NFTData={sliderData} />
     </div>
   );
 };

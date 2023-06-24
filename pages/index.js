@@ -14,7 +14,7 @@ const Home = () => {
     checkIfWalletConnected();
   }, []);
 
-  const { fetchProducts } = useContext(LockContext);
+  const { fetchProducts,getNft } = useContext(LockContext);
   const [nfts, setNfts] = useState([]);
   const [nftsCopy, setNftsCopy] = useState([]);
   const creators = getTopCreators(nfts);

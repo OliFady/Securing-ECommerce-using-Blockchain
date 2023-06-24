@@ -22,7 +22,11 @@ const client = ipfsHttpClient({
   },
 });
 
+const URL = "http://127.0.0.1:3000/api/v1/nfts"
 const subdomain = "https://needit.infura-ipfs.io";
+const config = {
+    headers: { Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0OTJhZDQ4MWE2NmU3M2NlYWZlZjNlNyIsImlhdCI6MTY4NzQ5ODM5MywiZXhwIjoxNjkxODE4MzkzfQ._9MyOLEhqIY73E4T-ksGRCVMwq0Z870zvPcMmip_YGI"}` }
+};
 
 const fetchContract = (signerOrProvider) =>
   new ethers.Contract(LockAddress, LockABI, signerOrProvider);
@@ -43,6 +47,16 @@ const connectingWithSmartContract = async () => {
 export const LockContext = React.createContext();
 
 export const LockProvider = ({ children }) => {
+
+const getNft = async()=>{
+
+  axios.get(URL,config).then((res)=>{
+    const data = res.data
+    console.log(data)
+  })
+}
+
+
   const [currentAccount, setcurrentAccount] = useState("");
 
   const router = useRouter();
@@ -64,6 +78,10 @@ export const LockProvider = ({ children }) => {
       console.log("can't connect Wallet");
     }
   };
+
+useEffect(()=>{
+  getNft()
+},[])
 
   useEffect(() => {
     checkIfWalletConnected;
@@ -247,6 +265,7 @@ export const LockProvider = ({ children }) => {
         createSale,
         currentAccount,
         fetchProducts,
+        getNft,
         buyProduct,
         fetchMyNFTsOrListedNFTs,
       }}
